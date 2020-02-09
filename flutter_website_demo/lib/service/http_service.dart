@@ -5,7 +5,6 @@ import '../conf/configure.dart';
 
 Future request(url, {formData}) async {
   String newUrl = 'http://${Config.IP}:${Config.PORT}${url}';
-  print(newUrl);
 
   try {
     Response res;

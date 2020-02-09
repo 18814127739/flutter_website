@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'dart:convert';
+import 'package:fluro/fluro.dart';
 import '../model/product.dart';
 import '../utils/utils.dart';
 import '../provider/product_provider.dart';
@@ -21,20 +22,17 @@ class HomeProductPageState extends State<HomeProductPage> {
   }
 
   void getProductList() async {
-    await request(Api.getProducts, formData: {}).then((value) {
-      print('接口返回数据');
-      print(value);
-      var data = json.decode(value.toString());
-      print('产品列表数据json格式:::${data.toString()}');
-      // 将json转换成ProductListModel
-      ProductListModel productList = ProductListModel.fromJson(data);
-      // 将数据放入ProductProvider
-      if(productList.data == null) {
-        Provider.of<ProductProvider>(context).getProductList([]);
-      } else {
-        Provider.of<ProductProvider>(context).getProductList(productList.data);
-      }
-    });
+    var value = await request(Api.getProducts, formData: {});
+    var data = json.decode(value.toString());
+    // print('产品列表数据json格式:::${data.toString()}');
+    // 将json转换成ProductListModel
+    ProductListModel productList = ProductListModel.fromJson(data);
+    // 将数据放入ProductProvider
+    if(productList.data == null) {
+      Provider.of<ProductProvider>(context).getProductList([]);
+    } else {
+      Provider.of<ProductProvider>(context).getProductList(productList.data);
+    }
   }
 
   @override
@@ -71,7 +69,11 @@ class HomeProductPageState extends State<HomeProductPage> {
       return InkWell(
         onTap: () {
           // 路由跳转至产品详情页
-          Application.router.navigateTo(context, '/detail?productId=${item.productId}');
+          Application.router.navigateTo(
+            context, 
+            '/detail?productId=${item.productId}', 
+            transition: TransitionType.fadeIn
+          );
         },
         child: Container(
           width: itemWidth,

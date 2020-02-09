@@ -29,7 +29,7 @@ class IndexPageState extends State<IndexPage> {
         if(productPage == null) {
           productPage = ProductPage();
         }
-        return homePage;
+        return productPage;
       case 2:
         if(chatPage == null) {
           chatPage = ChatPage();
@@ -41,10 +41,10 @@ class IndexPageState extends State<IndexPage> {
   @override
   Widget build(BuildContext context) {
     // 初始化websocket
-    // if(!socketInited) {
-    //   Provider.of<WebSocketProvider>(context).init();
-    //   socketInited = true;
-    // }
+    if(!socketInited) {
+      Provider.of<WebSocketProvider>(context).init();
+      socketInited = true;
+    }
 
     int currentIndex = Provider.of<CurrentIndexProvider>(context).currentIndex;
     return Scaffold(
